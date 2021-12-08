@@ -1,0 +1,6 @@
+numpy
+black
+isort
+jupyter
+ipython
+pandas
