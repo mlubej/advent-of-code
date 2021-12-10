@@ -4,3 +4,5 @@ isort
 jupyter
 ipython
 pandas
+scikit-image
+scipy
