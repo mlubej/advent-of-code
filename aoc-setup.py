@@ -16,8 +16,8 @@ URL_BASE = "https://adventofcode.com/"
 
 
 @click.command()
-@click.option("--year", help="Year of Advend of Code event.")
-@click.option("--day", help="Day of Advent of Code event.")
+@click.option("--year", type=int, help="Year of Advend of Code event.")
+@click.option("--day", type=int, help="Day of Advent of Code event.")
 def main(year, day):
     if year is None or day is None:
         with click.Context(main) as ctx:
@@ -25,7 +25,7 @@ def main(year, day):
         return
 
     # create directory
-    path = os.path.join(AOC_PATH, str(year), f"day-{day}")
+    path = os.path.join(AOC_PATH, str(year), f"day-{day:02d}")
     os.makedirs(path, exist_ok=True)
 
     # create templated notebook
