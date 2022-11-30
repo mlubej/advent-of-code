@@ -6,7 +6,7 @@ import sys
 import click
 
 AOC_PATH, _ = os.path.split(os.path.realpath(__file__))
-URL_BASE = "https://adventofcode.com/"
+URL_BASE = "https://adventofcode.com"
 
 
 @click.command()
