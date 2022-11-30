@@ -38,7 +38,7 @@ python aoc-setup.py --year 2021 --day 20
 # aoc --year 2021 --day 20
 ```
 
-This will create the following directory and files in the github repo
+This will create the following directory and files in the github repo and open VSCode in the appropriate location
 
 ```
 .
