@@ -1,8 +1,10 @@
-numpy
+advent-of-code-data
 black
+ipython
 isort
 jupyter
-ipython
+matplotlib
+numpy
 pandas
 scikit-image
 scipy
