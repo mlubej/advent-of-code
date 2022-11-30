@@ -36,7 +36,7 @@ def main(year, day):
     subprocess.run(f'code {os.path.join(path, "task.ipynb")}', shell=True)
 
     # open task
-    tool = "xdg-open" if sys.platform() == "linux" else "open"
+    tool = "xdg-open" if sys.platform == "linux" else "open"
     subprocess.run(f"{tool} {URL_BASE}/{year}/day/{day}", shell=True)
 
 
