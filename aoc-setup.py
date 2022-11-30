@@ -1,6 +1,7 @@
 import os
 import re
 import subprocess
+import sys
 
 import click
 
@@ -9,8 +10,8 @@ URL_BASE = "https://adventofcode.com/"
 
 
 @click.command()
-@click.option("--year", type=int, help="Year of Advend of Code event.")
-@click.option("--day", type=int, help="Day of Advent of Code event.")
+@click.option("--year", type=str, help="Year of Advend of Code event.")
+@click.option("--day", type=str, help="Day of Advent of Code event.")
 def main(year, day):
     if year is None or day is None:
         with click.Context(main) as ctx:
@@ -18,13 +19,13 @@ def main(year, day):
         return
 
     # create directory
-    path = os.path.join(AOC_PATH, str(year), f"day-{day:02d}")
+    path = os.path.join(AOC_PATH, year, f"day-{int(day):02d}")
     os.makedirs(path, exist_ok=True)
 
     # create templated notebook
     notebook_content = open(os.path.join(AOC_PATH, "notebook_template.ipynb"), "r").read()
-    notebook_content = re.sub(r"<DAY>", str(day), notebook_content)
-    notebook_content = re.sub(r"<YEAR>", str(year), notebook_content)
+    notebook_content = re.sub(r"<DAY>", day, notebook_content)
+    notebook_content = re.sub(r"<YEAR>", year, notebook_content)
 
     # save notebook
     with open(os.path.join(path, "task.ipynb"), "w") as fp:
@@ -33,6 +34,10 @@ def main(year, day):
     # open notebook
     subprocess.run(f"code {AOC_PATH}", shell=True)
     subprocess.run(f'code {os.path.join(path, "task.ipynb")}', shell=True)
+
+    # open task
+    tool = "xdg-open" if sys.platform() == "linux" else "open"
+    subprocess.run(f"{tool} {URL_BASE}/{year}/day/{day}", shell=True)
 
 
 if __name__ == "__main__":
