@@ -11,7 +11,7 @@ import subprocess
 
 import click
 
-AOC_PATH = "/Users/mlubej/play/my_github_stuff/advent-of-code/"
+AOC_PATH, _ = os.path.split(os.path.realpath(__file__))
 URL_BASE = "https://adventofcode.com/"
 
 
