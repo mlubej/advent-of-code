@@ -1,10 +1,3 @@
-"""
-- accepts year and day
-- creates a directory
-- creates a notebook with some template
-- download input data (example: https://adventofcode.com/2022/day/1/input)
-"""
-
 import os
 import re
 import subprocess
@@ -38,7 +31,7 @@ def main(year, day):
         fp.write(notebook_content)
 
     # open notebook
-    subprocess.run(f'code {os.path.join(AOC_PATH, "advent-of-code.code-workspace")}', shell=True)
+    subprocess.run(f"code {AOC_PATH}", shell=True)
     subprocess.run(f'code {os.path.join(path, "task.ipynb")}', shell=True)
 
 
