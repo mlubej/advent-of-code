@@ -16,10 +16,26 @@ pip install -r requirements.txt
 
 ### Usage
 
+Running the script without arguments prints out help:
+
+```
+Usage:  [OPTIONS]
+
+Options:
+  --year INTEGER  Year of Advend of Code event.
+  --day INTEGER   Day of Advent of Code event.
+  --help          Show this message and exit.
+```
+
 To start working on a task, simply run the following:
 
 ```bash
 python aoc-setup.py --year 2021 --day 20
+
+# you can even create an alias in your ~/.zshrc or ~/.bashrc
+# alias aoc='python ~/path/to/repo/aoc-setup.py'
+# and then do just
+# aoc --year 2021 --day 20
 ```
 
 This will create the following directory and files in the github repo
