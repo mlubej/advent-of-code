@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 import click
 
@@ -28,11 +29,14 @@ def main(year, day):
     notebook_content = re.sub(r"<YEAR>", year, notebook_content)
 
     # save notebook
-    with open(os.path.join(path, "task.ipynb"), "w") as fp:
-        fp.write(notebook_content)
+    out_path = os.path.join(path, "task.ipynb")
+    if not os.path.exists(out_path):
+        with open(out_path, "w") as fp:
+            fp.write(notebook_content)
 
     # open notebook
     subprocess.run(f"code {AOC_PATH}", shell=True)
+    time.sleep(1)  # wait for VSCode to open
     subprocess.run(f'code {os.path.join(path, "task.ipynb")}', shell=True)
 
     # open task
