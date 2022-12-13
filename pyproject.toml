@@ -4,9 +4,9 @@ preview = true
 
 [tool.isort]
 profile = "black"
-known_first_party = ["sentinelhub", "eolearn", "eogrow", "eoflow", "fd"]
-known_absolute = "<PACKAGE_NAME>"
-sections = ["FUTURE","STDLIB","THIRDPARTY","FIRSTPARTY","ABSOLUTE","LOCALFOLDER"]
+# known_absolute = "<PACKAGE_NAME>"
+# sections = ["FUTURE","STDLIB","THIRDPARTY","ABSOLUTE","LOCALFOLDER"]
+sections = ["FUTURE","STDLIB","THIRDPARTY","LOCALFOLDER"]
 line_length = 120
 
 [tool.mypy]
