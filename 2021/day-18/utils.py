@@ -1,7 +1,5 @@
 import re
 
-import numpy as np
-
 
 def explode(x):
     depth = 0
