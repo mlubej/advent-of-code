@@ -26,3 +26,17 @@ def find_optimal_path_djikstra(array, fill_value=99999):
         current = sorted(unvisited - init_cands, key=lambda x: cost_from_zero[x])[0]
 
     return cost_from_zero[end]
+
+
+def unify_ranges(ranges):
+    ranges = sorted(map(list, ranges))
+
+    new_ranges = [ranges[0]]
+    for cs, ce in ranges[1:]:
+        ps, pe = new_ranges[-1]
+        if cs <= pe:
+            new_ranges[-1][1] = max(ce, pe)
+        else:
+            new_ranges.append([cs, ce])
+
+    return new_ranges
