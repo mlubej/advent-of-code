@@ -1,0 +1,12 @@
+advent-of-code-data
+black
+ipython
+isort
+jupyter
+matplotlib
+numpy
+pandas
+pre-commit
+scikit-image
+scipy
+tqdm
