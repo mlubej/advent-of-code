@@ -1,5 +1,6 @@
 advent-of-code-data
 black
+click
 ipython
 isort
 jupyter
