@@ -25,6 +25,6 @@ for idx, day in enumerate(days):
     mean, std = np.mean(times), np.std(times)
     total_time += mean
     total_error_sq += std**2
-    print(f"|Day {idx+1}  | {mean:.2e}s ± {std:.2e}s|")
+    print(f"|Day {idx+1}  | {mean:.4e}s ± {std:.4e}s|")
 
-print(f"|Total | {total_time:.2e}s ± {(total_error_sq**0.5):.2e}s|")
+print(f"|**Total** | **{total_time:.4e}s ± {(total_error_sq**0.5):.4e}s**|")
