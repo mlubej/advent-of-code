@@ -5,7 +5,7 @@ use String::Util qw(trim);
 
 my $begin_time = time();
 
-open( my $file, "<", "input.txt" ) or die "Can't open input file";
+open( my $file, "<", $ARGV[0] ) or die "Can't open input file";
 
 %str2int = (
     'one'   => 1,
@@ -18,8 +18,7 @@ open( my $file, "<", "input.txt" ) or die "Can't open input file";
     'eight' => 8,
     'nine'  => 9
 );
-my $spelled_re     = join( '|', keys %str2int );
-my $rev_spelled_re = reverse $spelled_re;
+my $spelled_re = join( '|', ( keys %str2int, values %str2int ) );
 
 my @calValuesPart1 = ();
 my @calValuesPart2 = ();
@@ -31,10 +30,8 @@ while ( my $line = <$file> ) {
     push @calValuesPart1, $matches[0] . $matches[-1];
 
     # part 2 fill
-    my @matches     = $line          =~ /(\d|$spelled_re)/g;
-    my @rev_matches = reverse($line) =~ /(\d|$rev_spelled_re)/g;
-    push @calValuesPart2,
-      ( $str2int{ $matches[0] } // $matches[0] ) . ( $str2int{ reverse $rev_matches[0] } // $rev_matches[0] );
+    my @matches = $line =~ /(?=($spelled_re))/g;    # use positive lookahead
+    push @calValuesPart2, ( $str2int{ $matches[0] } // $matches[0] ) . ( $str2int{ $matches[-1] } // $matches[-1] );
 }
 
 close $file;
@@ -46,4 +43,4 @@ say sum(@calValuesPart1);
 say sum(@calValuesPart2);
 
 my $end_time = time();
-printf( "Elapsed time %.5fs\n", $end_time - $begin_time );
+printf( "Elapsed time %.8fs\n", $end_time - $begin_time );

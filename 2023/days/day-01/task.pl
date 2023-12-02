@@ -5,7 +5,7 @@ use String::Util qw(trim);
 
 my $begin_time = time();
 
-open( my $file, "<", "input.txt" ) or die "Can't open input file";
+open( my $file, "<", $ARGV[0] ) or die "Can't open input file";
 
 %str2int = (
     'one'   => 1,
@@ -51,4 +51,4 @@ say sum(@calValuesPart1);
 say sum(@calValuesPart2);
 
 my $end_time = time();
-printf( "Elapsed time %.5fs\n", $end_time - $begin_time );
+printf( "Elapsed time %.8fs\n", $end_time - $begin_time );
