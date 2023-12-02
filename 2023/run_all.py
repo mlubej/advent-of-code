@@ -12,9 +12,11 @@ def extract_time(day):
 print("# Advent of Code 2023")
 print()
 print("Solving in Perl.")
-print("\n")
+print()
+print("### Timing")
 
-
+print("\n|Day|Time|")
+print("|-|-|")
 days = glob("./days/day-*")
 total_time = 0
 total_error_sq = 0
@@ -23,7 +25,6 @@ for idx, day in enumerate(days):
     mean, std = np.mean(times), np.std(times)
     total_time += mean
     total_error_sq += std**2
-    print(f"Day {idx+1} Execution Time: {mean:.2e}s ± {std:.2e}s")
+    print(f"|Day {idx+1} Execution Time | {mean:.2e}s ± {std:.2e}s|")
 
-print("-------------")
-print(f"Total Execution Time: {total_time:.2e}s ± {(total_error_sq**0.5):.2e}s")
+print(f"|Total Execution Time | {total_time:.2e}s ± {(total_error_sq**0.5):.2e}s|")

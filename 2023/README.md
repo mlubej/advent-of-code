@@ -2,8 +2,10 @@
 
 Solving in Perl.
 
+### Timing
 
-Day 1 Execution Time: 7.51e-03s ± 8.16e-04s
-Day 2 Execution Time: 2.15e-03s ± 2.45e-04s
--------------
-Total Execution Time: 9.65e-03s ± 8.52e-04s
+| Day                  | Time                  |
+| -------------------- | --------------------- |
+| Day 1 Execution Time | 7.40e-03s ± 7.01e-04s |
+| Day 2 Execution Time | 2.34e-03s ± 4.94e-04s |
+| Total Execution Time | 9.73e-03s ± 8.58e-04s |
