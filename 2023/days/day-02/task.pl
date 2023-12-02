@@ -15,7 +15,7 @@ my @powers    = ();
 while ( my $line = <$file> ) {
     my $line = trim $line;
 
-    # get id
+    # extract info
     my ( $id, $sets ) = split( ':', $line );
     my $id     = ( $id =~ /(\d+)/ )[0];
     my @reds   = $sets =~ /(\d+) red/g;
