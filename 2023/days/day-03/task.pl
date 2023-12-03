@@ -4,15 +4,14 @@ use strict;
 use v5.30;
 use String::Util qw(trim);
 use Time::HiRes  qw( time );
-use List::Util 'any', 'sum';
+use List::Util 'sum';
 
 my $begin_time = time();
 open( my $file, "<", $ARGV[0] ) or die "Can't open input file";
 
 my @lines = ();
 while ( my $line = <$file> ) {
-    my $line = trim $line;
-    push @lines, $line;
+    push @lines, trim $line;
 }
 close $file;
 
