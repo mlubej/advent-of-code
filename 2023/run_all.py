@@ -1,6 +1,7 @@
-from glob import glob
-import subprocess
 import re
+import subprocess
+from glob import glob
+
 import numpy as np
 
 
@@ -17,11 +18,10 @@ print("### Timing")
 
 print("\n|Day|Execution Time|")
 print("|-|-|")
-days = glob("./days/day-*")
 total_time = 0
 total_error_sq = 0
-for idx, day in enumerate(days):
-    times = [extract_time(day) for _ in range(20)]
+for idx, day in enumerate(sorted(glob("./days/day-*"))):
+    times = [extract_time(day) for _ in range(5)]
     mean, std = np.mean(times), np.std(times)
     total_time += mean
     total_error_sq += std**2

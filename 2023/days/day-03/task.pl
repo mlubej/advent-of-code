@@ -4,7 +4,6 @@ use strict;
 use v5.30;
 use String::Util qw(trim);
 use Time::HiRes  qw( time );
-
 use List::Util 'any', 'sum';
 
 my $begin_time = time();
@@ -20,7 +19,7 @@ close $file;
 sub get_symbol {
     my ( $row_idx, $col_idx ) = @_;
     my @row = split //, $lines[$row_idx];
-    while ( $row[$col_idx] =~ /([^\d\.])/g ) {
+    if ( $row[$col_idx] =~ /([^\d\.])/ ) {
         return $row_idx . '|' . $col_idx . '|' . $1;
     }
     return 0;
@@ -41,22 +40,19 @@ sub get_adjacent_symbols {
     return grep { $_ } @symbols;
 }
 
-my $row_idx = 0;
 my @ids;
 my %gears;
+my $row_idx = 0;
 foreach my $line (@lines) {
     while ( $line =~ /(\d+)/g ) {
 
         # fill ids
         my @part_numbers = get_adjacent_symbols( $1, $row_idx, $-[1] );
-        if ( scalar @part_numbers > 0 ) {
-            push @ids, $1;
-        }
+        if ( scalar @part_numbers > 0 ) { push @ids, $1; }
 
         # fill hash
         foreach my $part (@part_numbers) {
-            my ( $row_idx, $col_idx, $symbol ) = split( /\|/, $part );
-            if ( $symbol ne "*" ) { next }
+            if ( index( $part, "*" ) eq -1 ) { next }
             $gears{$part} = exists $gears{$part} ? $gears{$part} . '|' . $1 : $1;
         }
     }
@@ -64,9 +60,9 @@ foreach my $line (@lines) {
 }
 
 my @gear_ratios;
-while ( my ( $key, $value ) = each %gears ) {
-    my @gear_list = split( /\|/, $value );
-    if ( scalar @gear_list == 2 ) { push @gear_ratios, $gear_list[0] * $gear_list[1]; }
+foreach my $key ( keys %gears ) {
+    my @gear_list = $gears{$key} =~ /(\d+)/g;
+    if ( scalar @gear_list eq 2 ) { push @gear_ratios, $gear_list[0] * $gear_list[1]; }
 }
 
 # Part 1
