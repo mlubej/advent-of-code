@@ -5,6 +5,7 @@ use v5.30;
 use String::Util qw(trim);
 use Time::HiRes  qw( time );
 use List::Util 'sum';
+use experimental 'smartmatch';
 
 my $begin_time = time();
 open( my $file, "<", $ARGV[0] ) or die "Can't open input file";
@@ -31,7 +32,7 @@ foreach my $line (@lines) {
     # part 1
     if ( scalar @numbers > 0 ) { push @points, 2**( scalar(@numbers) - 1 ); }
 
-    # # part 2
+    # part 2
     my ($card) = $line =~ /Card\s+(\d+):/g;
     $counts{$card} += 1;
     for my $idx ( 1 .. scalar @numbers ) { $counts{ $card + $idx } += $counts{$card}; }
