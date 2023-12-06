@@ -14,6 +14,11 @@ print("# Advent of Code 2023")
 print()
 print("Solving in Perl.")
 print()
+print("### Requirements")
+print("- `String::Util`")
+print("- `Test::Assertions`")
+
+print()
 print("### Timing")
 
 print("\n|Day|Execution Time|")
