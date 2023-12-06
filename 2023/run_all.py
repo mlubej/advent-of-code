@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 from glob import glob
@@ -26,6 +27,9 @@ print("|-|-|")
 total_time = 0
 total_error_sq = 0
 for idx, day in enumerate(sorted(glob("./days/day-*"))):
+    if not os.path.exists(f"{day}/task.pl"):
+        continue
+
     times = [extract_time(day) for _ in range(5)]
     mean, std = np.mean(times), np.std(times)
     total_time += mean
