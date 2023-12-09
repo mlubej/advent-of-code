@@ -19,12 +19,6 @@ sub range_sort {
     return sort { ( $a =~ /(\d+)/ )[0] <=> ( $b =~ /(\d+)/ )[0] } @_;
 }
 
-# {
-#     my @observed = range_sort( '1|2', '5|10', '3|4' );
-#     my @expected = ( '1|2', '3|4', '5|10' );
-#     ASSERT( EQUAL( \@observed, \@expected ) );
-# }
-
 sub extract_conversion_range_list {
     my ($stage) = @_;
     my @range_list;
@@ -36,23 +30,11 @@ sub extract_conversion_range_list {
     return range_sort @range_list;
 }
 
-# {
-#     my @observed = extract_conversion_range_list("0 15 37\n37 52 2\n39 0 15");
-#     my @expected = ( '0|15|39', '15|52|-15', '52|54|-15' );
-#     ASSERT( EQUAL( \@observed, \@expected ) );
-# }
-
 sub range_offset {
     my ($entry) = @_;
     my ( $start, $end, $offset ) = split( /\|/, $entry );
     return join '|', ( map { $_ + $offset } ( $start, $end ) );
 }
-
-# {
-#     ASSERT( range_offset('1|10|3') eq '4|13' );
-#     ASSERT( range_offset('-1|5|3') eq '2|8' );
-#     ASSERT( range_offset('2|3|-2') eq '0|1' );
-# }
 
 sub range_intersection {
     my ( $s1, $s2 )          = @_;
@@ -61,15 +43,6 @@ sub range_intersection {
     my ( $r1, $r2 )          = ( max( $x1, $y1 ), min( $x2, $y2 ) );
     return $r1 < $r2 ? $r1 . '|' . $r2 . '|' . $offset : 0;
 }
-
-# {
-#     ASSERT( range_intersection( '5|10', '6|7|0' ) eq '6|7|0' );
-#     ASSERT( range_intersection( '5|10', '6|15|1' ) eq '6|10|1' );
-#     ASSERT( range_intersection( '5|10', '3|15|2' ) eq '5|10|2' );
-#     ASSERT( range_intersection( '5|10', '2|7|3' ) eq '5|7|3' );
-#     ASSERT( range_intersection( '5|10', '10|15|4' ) eq 0 );
-#     ASSERT( range_intersection( '5|10', '12|15|5' ) eq 0 );
-# }
 
 sub range_gaps {
     my ( $range, @intersections ) = @_;
@@ -88,16 +61,6 @@ sub range_gaps {
     return range_sort @gaps;
 }
 
-# {
-# say join ', ', range_gaps( '1|10', ( '2|3', '4|6', '8|9' ) );
-# my @diff = range_difference( '1|10', ('1|5|0') );
-# ASSERT( EQUAL( \@diff, [ '5|6', '7|10' ] ) );÷
-# my @diff = range_difference( '5|10', '2|15|0' );
-# ASSERT( EQUAL( \@diff, [] ) );
-# my @diff = range_difference( '5|10', '8|15|0' );
-# ASSERT( EQUAL( \@diff, ['5|8'] ) );
-# }
-
 sub range_union {
     my @range_list     = range_sort @_;
     my @new_range_list = ( $range_list[0] );
@@ -109,12 +72,6 @@ sub range_union {
     }
     return range_sort @new_range_list;
 }
-
-# {
-#     my @observed = range_union( '6|10', '1|5', '9|15', '25|30', '15|20' );
-#     my @expected = ( '1|5', '6|20', '25|30' );
-#     ASSERT( EQUAL( \@observed, \@expected ) );
-# }
 
 sub get_seed_locations {
     my @range_list = @_;
