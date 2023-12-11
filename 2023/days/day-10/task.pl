@@ -2,6 +2,7 @@ use v5.30;
 use warnings;
 use strict;
 
+use experimental 'smartmatch';
 use String::Util qw(trim);
 use Time::HiRes  qw( time );
 use List::Util 'all';
