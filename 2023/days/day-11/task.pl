@@ -21,15 +21,6 @@ my @grid = map { [ split( //, $_ ) ] } @lines;
 sub get_coords { return split( /\|/, $_[0] ); }
 sub to_node    { return $_[0] . '|' . $_[1]; }
 
-sub add_row { my ( $matrix, $v, $row ) = @_; splice @{$matrix}, $row, 0, $v; }
-
-sub add_column {
-    my ( $matrix, $v, $col ) = @_;
-    for my $r (@$matrix) {
-        splice @$r, $col, 0, $v;
-    }
-}
-
 # expand space
 my @empty_rows = grep { index( join( '', @{ $grid[$_] } ), '#' ) eq -1 } ( 0 .. $#grid );
 my @empty_cols;
