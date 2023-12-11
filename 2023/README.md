@@ -6,6 +6,7 @@ Solving in Perl.
 
 - `String::Util`
 - `Test::Assertions`
+- `Algorithm::Combinatorics`
 
 ### Timing
 
