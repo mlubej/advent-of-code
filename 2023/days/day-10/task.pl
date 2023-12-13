@@ -5,7 +5,7 @@ use strict;
 use experimental 'smartmatch';
 use String::Util qw(trim);
 use Time::HiRes  qw( time );
-use List::Util 'all';
+use List::Util 'sum';
 
 my $begin_time = time();
 
@@ -18,6 +18,8 @@ while ( my $line = <$file> ) {
 close $file;
 
 my @grid = map { [ split( //, $_ ) ] } @lines;
+my ($start_node) =
+  map { $_ . '|' . index( $lines[$_], 'S' ) } ( grep { index( $lines[$_], 'S' ) ne -1 } ( 0 .. $#lines ) );
 
 my %connections = (
     '-' => [ '0|-1', '0|1' ],
@@ -54,74 +56,37 @@ sub connects_backwards {
     return ( $a ~~ @adj_b ) ? 1 : 0;
 }
 
-sub graph {
-    my @grid = @{ $_[0] };
-    my $start_node;
-    my %nodes;
-    for my $idx ( 0 .. $#grid ) {
-        for my $jdx ( 0 .. $#{ $grid[$idx] } ) {
-            my $node = to_node( $idx, $jdx );
-            if ( get_grid_element($node) eq 'S' ) { $start_node = $node; }
-            my @candidates = map { add_nodes( $node, $_, 1 ); } @{ $connections{ get_grid_element $node } };
-            @candidates   = grep { is_on_grid($_) && connects_backwards( $node, $_ ) } @candidates;
-            $nodes{$node} = \@candidates;
-        }
-    }
-    return $start_node, \%nodes;
+sub get_adjacent {
+    my $node       = $_[0];
+    my @candidates = map { add_nodes( $node, $_, 1 ); } @{ $connections{ get_grid_element $node } };
+    @candidates = grep { is_on_grid($_) && connects_backwards( $node, $_ ) } @candidates;
+    return @candidates;
 }
 
-my ( $start_node, $nodes ) = graph( \@grid );
-my %nodes = %{$nodes};
-delete $connections{'.'};    # not sure why this is inside ...
-
-# replace 'S'
-my @start_connections = map { add_nodes( $_, $start_node, -1 ) } @{ $nodes{$start_node} };
-my @start_candidates  = grep {
-    all { $_ ~~ @start_connections ? 1 : 0 } @{ $connections{$_} };
-} ( keys %connections );
-my ( $sr, $sc ) = get_coords($start_node);
-$grid[$sr][$sc] = $start_candidates[0];
+sub det {
+    my ( $r1, $c1 ) = get_coords( $_[0] );
+    my ( $r2, $c2 ) = get_coords( $_[1] );
+    return $c1 * $r2 - $c2 * $r1;
+}
 
 # Part 1
-my ( $start, $end ) = @{ $nodes{$start_node} };
+my ( $start, $end ) = get_adjacent $start_node;
 my @path_a = ( $start_node, $start );
 my @path_b = ( $start_node, $end );
 while (1) {
-    my $last_a = $path_a[-2];
-    my $last_b = $path_b[-2];
-    push @path_a, ( grep { $_ ne $last_a } @{ $nodes{ $path_a[-1] } } );
-    push @path_b, ( grep { $_ ne $last_b } @{ $nodes{ $path_b[-1] } } );
+    push @path_a, ( grep { $_ ne $path_a[-2] } ( get_adjacent $path_a[-1] ) );
+    push @path_b, ( grep { $_ ne $path_b[-2] } ( get_adjacent $path_b[-1] ) );
     if ( $path_a[-1] eq $path_b[-1] ) { last; }
 }
 say scalar(@path_a) - 1;
 
 # Part 2
-my @temp;
-my @path = ( @path_a, @path_b );
-for my $idx ( 0 .. $#grid ) { my @dots = (".") x scalar( @{ $grid[$idx] } ); push @temp, \@dots; }
-for my $node (@path) { my ( $r, $c ) = get_coords($node); $temp[$r][$c] = get_grid_element($node); }
-@grid = @temp;
-
-my $area  = 0;
-my @left  = ( 'F', 'L' );
-my @right = ( '7', 'J' );
-for my $idx ( 0 .. $#grid ) {
-    my $last   = '';
-    my $inside = 0;
-    for my $jdx ( 0 .. $#{ $grid[$idx] } ) {
-        my $node = to_node( $idx, $jdx );
-        if    ( get_grid_element($node) eq '-' )   { next; }
-        elsif ( get_grid_element($node) eq '|' )   { $inside = $inside ? 0 : 1; }
-        elsif ( get_grid_element($node) ~~ @left ) { $last   = get_grid_element($node); }
-        elsif ( get_grid_element($node) ~~ @right ) {
-            if    ( $last eq 'F' && get_grid_element($node) eq 'J' ) { $inside = $inside ? 0 : 1; }
-            elsif ( $last eq 'L' && get_grid_element($node) eq '7' ) { $inside = $inside ? 0 : 1; }
-            $last = '';
-        }
-        elsif ( $inside && get_grid_element($node) eq '.' ) { $area++; }
-    }
-}
-say $area;
+# https://en.wikipedia.org/wiki/Shoelace_formula
+# https://en.wikipedia.org/wiki/Pick%27s_theorem
+my @path       = ( @path_a, reverse @path_b[ 0 .. ( $#path_b - 1 ) ] );
+my $area_twice = abs sum( map { det( $path[ $_ - 1 ], $path[$_] ) } ( 1 .. $#path ) );
+my $boundary   = scalar(@path) - 1;
+say( ( $area_twice - $boundary + 2 ) / 2 );
 
 my $end_time = time();
 printf( "Elapsed time %.8fs\n", $end_time - $begin_time );
