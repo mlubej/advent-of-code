@@ -18,6 +18,12 @@ print()
 print("### Requirements")
 print("- `String::Util`")
 print("- `Test::Assertions`")
+print("- `Math::Cartesian::Product`")
+print("- `Math::Matrix`")
+print("- `Math::BigFloat`")
+print("- `Algorithm::GaussianElimination::GF2`")
+print("- `List::MoreUtils`")
+print("- `Memoize`")
 
 print()
 print("### Timing")
@@ -30,10 +36,8 @@ for idx, day in enumerate(sorted(glob("./days/day-*"))):
     if not os.path.exists(f"{day}/task.pl"):
         continue
 
-    times = [extract_time(day) for _ in range(5)]
-    mean, std = np.mean(times), np.std(times)
-    total_time += mean
-    total_error_sq += std**2
-    print(f"|Day {idx+1}  | {mean:.4e}s ± {std:.4e}s|")
+    time = extract_time(day)
+    total_time += time
+    print(f"|Day {idx+1}  | ~{time:.4e}s|")
 
-print(f"|**Total** | **{total_time:.4e}s ± {(total_error_sq**0.5):.4e}s**|")
+print(f"|**Total** | **~{total_time:.4e}s |")
