@@ -40,4 +40,4 @@ for idx, day in enumerate(sorted(glob("./days/day-*"))):
     total_time += time
     print(f"|Day {idx+1}  | ~{time:.4e}s|")
 
-print(f"|**Total** | **~{total_time:.4e}s |")
+print(f"|**Total** | **~{total_time:.4e}s **|")
